@@ -23,15 +23,11 @@ output:
 
 ## Reading Points <span id=headpoints>{40} Possible</span>
 
-<<<<<<< HEAD
-### Section 2.1 <span id=recpoints>{6}</span><span id=report>{ 6/6 }</span>
-=======
-### Section 2.1 <span id=recpoints>{6}</span><span id=report>{ 4/6 }</span>
->>>>>>> f8be158c7aed0ca1796de7513a3618cb73b09c4a
+### Section 2.1 <span id=recpoints>{6}</span><span id=report>{ 3/6 }</span>
 
-### Section 2.2 <span id=recpoints>{3}</span><span id=report>{ / }</span>
+### Section 2.2 <span id=recpoints>{3}</span><span id=report>{ 3/3 }</span>
 
-### Section 2.3 <span id=recpoints>{1}</span><span id=report>{ / }</span>
+### Section 2.3 <span id=recpoints>{1}</span><span id=report>{ 1/1 }</span>
 
 ### Section 2.4 <span id=recpoints>{4}</span><span id=report>{ / }</span>
 
