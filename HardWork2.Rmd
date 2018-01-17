@@ -1,0 +1,296 @@
+---
+title: "Hard Work 2"
+output: 
+  html_document:
+    theme: cerulean
+    code_folding: hide
+---
+
+
+## Instructions
+
+1. Study Sections 2.1-2.10 of Chapter 2: "Inferences in Regression and Correlation Analysis."    
+<span id="note">(Pace yourself, you have two weeks to work on this assignment.)</span>
+
+2. Attempt and submit at least <span id=points style="padding-left:0px;">{83}</span> Hard Work Points by Saturday at 11:59 PM.    
+<span id=note>Over <span id=points style="padding-left:0px;">{92}</span> gets you {+1} Final Exam Point.</span>    
+<span id=note>Over <span id=points style="padding-left:0px;">{100}</span> gets you {+2} Final Exam Points.</span>    
+<span id=note>Over <span id=points style="padding-left:0px;">{107}</span> gets you {+3} Final Exam Points.</span>
+
+<br/>
+
+
+
+## Reading Points <span id=headpoints>{40} Possible</span>
+
+### Section 2.1 <span id=recpoints>{6}</span><span id=report>{ / }</span>
+
+### Section 2.2 <span id=recpoints>{3}</span><span id=report>{ / }</span>
+
+### Section 2.3 <span id=recpoints>{1}</span><span id=report>{ / }</span>
+
+### Section 2.4 <span id=recpoints>{4}</span><span id=report>{ / }</span>
+
+### Section 2.5 <span id=recpoints>{6}</span><span id=report>{ / }</span>
+
+### Section 2.6 <span id=recpoints>{3}</span><span id=report>{ / }</span>
+
+### Section 2.7 <span id=recpoints>{8}</span><span id=report>{ / }</span>
+
+### Section 2.8 <span id=recpoints>{4}</span><span id=report>{ / }</span>
+
+### Section 2.9 <span id=recpoints>{3}</span><span id=report>{ / }</span>
+
+### Section 2.10 <span id=recpoints>{2}</span><span id=report>{ / }</span>
+
+
+<br/>
+
+
+
+
+## Theory Points <span id=headpoints>{33} Possible</span>
+
+### Problem 2.1 <span id=points>{1}</span><span id=report>{ / }</span>
+ 
+### Problem 2.2 <span id=points>{1}</span><span id=report>{ / }</span>
+ 
+### Problem 2.3 <span id=points>{1}</span><span id=report>{ / }</span>
+
+### Problem 2.9 <span id=points>{1}</span><span id=report>{ / }</span>
+ 
+### Problem 2.11 <span id=points>{1}</span><span id=report>{ / }</span>
+ 
+### Problem 2.12 <span id=points>{1}</span><span id=report>{ / }</span>
+
+### Problem 2.18 <span id=points>{1}</span><span id=report>{ / }</span>
+<span id=headnote>Hint: Read page 71</span>
+ 
+### Problem 2.19 <span id=points>{1}</span><span id=report>{ / }</span>
+
+### Problem 2.20 or 2.21 or 2.22 <span id=points>{1}</span><span id=report>{ / }</span>
+
+### Problem 2.33 <span id=recpoints>{3}</span><span id=report>{ / }</span>
+
+### Problem 2.50 <span id=points>{2}</span><span id=report>{ / }</span>
+
+### Problem 2.51 <span id=points>{2}</span><span id=report>{ / }</span>
+
+### Problem 2.53 <span id=points>{4}</span><span id=report>{ / }</span>
+
+### Problem 2.66 <span id=recpoints>{5}</span><span id=report>{ / }</span> 
+
+<span id=note>R-Code Hint: rnorm(5, 0, sqrt(25))</span>
+
+### Exercise 2.55 <span id=recpoints>{2}</span><span id=report>{ / }</span>
+
+### Exercise 2.57 <span id=points>{3}</span><span id=report>{ / }</span>
+
+### Exercise 2.61 <span id=points>{3}</span><span id=report>{ / }</span>
+
+ 
+
+<br/>
+
+
+
+## Application Points <span id=headpoints>{53} Possible</span>
+
+<a id=datalink target="_blank" href=http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/textdatasets/index.html>Data Files</a>
+
+
+### Problem 2.1 <span id=points>{1}</span><span id=report>{ / }</span>
+
+### Problem 2.4 <span id=recpoints>{4}</span><span id=report>{ / }</span>
+
+```{r p4}
+# Load the Data:
+p1.19 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutner/Chapter%20%201%20Data%20Sets/CH01PR19.txt")
+
+# Rewrite the column names to be "Y" and "X" to match the textbook:
+colnames(p1.19) <- c("Y","X")
+```
+
+
+### Problem 2.5 <span id=recpoints>{4}</span><span id=report>{ / }</span> 
+
+```{r p5}
+# Load the Data:
+p1.20 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutner/Chapter%20%201%20Data%20Sets/CH01PR20.txt")
+
+# Rewrite the column names to be "Y" and "X" to match the textbook:
+colnames(p1.20) <- c("Y","X")
+```
+
+
+### Problem 2.7 <span id=points>{3}</span><span id=report>{ / }</span> 
+
+```{r p7}
+# Load the Data:
+p1.22 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutner/Chapter%20%201%20Data%20Sets/CH01PR22.txt")
+
+# Rewrite the column names to be "Y" and "X" to match the textbook:
+colnames(p1.22) <- c("Y","X")
+```
+
+
+### Problem 2.10 <span id=recpoints>{2}</span><span id=report>{ / }</span> 
+
+
+### Problem 2.13 <span id=recpoints>{4}</span><span id=report>{ / }</span> 
+
+```{r p13}
+# Load the Data:
+p1.19 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutner/Chapter%20%201%20Data%20Sets/CH01PR19.txt")
+
+# Rewrite the column names to be "Y" and "X" to match the textbook:
+colnames(p1.19) <- c("Y","X")
+```
+
+
+### Problem 2.14 <span id=points>{4}</span><span id=report>{ / }</span> 
+
+```{r p14}
+# Load the Data:
+p1.20 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutner/Chapter%20%201%20Data%20Sets/CH01PR20.txt")
+
+# Rewrite the column names to be "Y" and "X" to match the textbook:
+colnames(p1.20) <- c("Y","X")
+```
+
+
+### Problem 2.15 <span id=points>{4}</span><span id=report>{ / }</span>
+
+```{r p15}
+# Load the Data:
+p1.21 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutner/Chapter%20%201%20Data%20Sets/CH01PR21.txt")
+
+# Rewrite the column names to be "Y" and "X" to match the textbook:
+colnames(p1.21) <- c("Y","X")
+```
+
+
+### Problem 2.16 <span id=recpoints>{5}</span><span id=report>{ / }</span> 
+
+```{r p16}
+# Load the Data:
+p1.22 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutner/Chapter%20%201%20Data%20Sets/CH01PR22.txt")
+
+# Rewrite the column names to be "Y" and "X" to match the textbook:
+colnames(p1.22) <- c("Y","X")
+```
+
+
+### Problem 2.25 <span id=recpoints>{5}</span><span id=report>{ / }</span>
+
+```{r p25}
+# Load the Data:
+p1.20 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutner/Chapter%20%201%20Data%20Sets/CH01PR20.txt")
+
+# Rewrite the column names to be "Y" and "X" to match the textbook:
+colnames(p1.20) <- c("Y","X")
+```
+
+
+### Problem 2.26 <span id=recpoints>{4}</span><span id=report>{ / }</span>
+
+```{r p26}
+# Load the Data:
+p1.22 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutner/Chapter%20%201%20Data%20Sets/CH01PR22.txt")
+
+# Rewrite the column names to be "Y" and "X" to match the textbook:
+colnames(p1.22) <- c("Y","X")
+```
+
+
+### Problem 2.29 <span id=recpoints>{5}</span><span id=report>{ / }</span> 
+
+```{r p29}
+# Load the Data:
+p1.27 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutner/Chapter%20%201%20Data%20Sets/CH01PR27.txt")
+
+# Rewrite the column names to be "Y" and "X" to match the textbook:
+colnames(p1.27) <- c("Y","X")
+```
+
+
+### Problem 2.30 <span id=points>{5}</span><span id=report>{ / }</span> 
+
+```{r p30}
+# Load the Data:
+p1.28 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutner/Chapter%20%201%20Data%20Sets/CH01PR28.txt")
+
+# Rewrite the column names to be "Y" and "X" to match the textbook:
+colnames(p1.28) <- c("Y","X")
+```
+
+### Problem 2.32 <span id=points>{3}</span><span id=report>{ / }</span> 
+
+```{r p32}
+# Load the Data:
+p1.28 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutner/Chapter%20%201%20Data%20Sets/CH01PR28.txt")
+
+# Rewrite the column names to be "Y" and "X" to match the textbook:
+colnames(p1.28) <- c("Y","X")
+```
+
+
+
+<br />
+
+
+
+ 
+
+ 
+ 
+ 
+ <style>
+#points {
+  font-size:.8em;
+  padding-left:5px;
+  font-weight:bold; 
+  color:#317eac;
+}
+
+#recpoints {
+  font-size:.8em;
+  padding-left:5px;
+  font-weight:bold; 
+  color:#7eac31;
+}
+
+#report {
+  font-size:.7em;
+  padding-left:15px;
+  font-weight:normal; 
+  color:#5a5a5a;
+}
+
+#datalink {
+  font-size:.5em;
+  color:#317eac;
+  padding-left:5px;
+}
+
+#headnote {
+  font-size:.6em;
+  color:#787878;
+}
+
+#note {
+  font-size:.8em;
+  color:#787878;
+}
+
+#headpoints {
+ font-size:12pt;
+ color: #585858; 
+ padding-left: 15px;
+}
+</style>
+
+
+ 
+
+ 
