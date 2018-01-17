@@ -23,7 +23,7 @@ output:
 
 ## Reading Points <span id=headpoints>{40} Possible</span>
 
-### Section 2.1 <span id=recpoints>{6}</span><span id=report>{ / }</span>
+### Section 2.1 <span id=recpoints>{6}</span><span id=report>{ /6 }</span>
 
 ### Section 2.2 <span id=recpoints>{3}</span><span id=report>{ / }</span>
 
