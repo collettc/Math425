@@ -19,7 +19,36 @@ output:
 
 <br/>
 
+##Notes
 
+There is always a hypotheses for each parameter in the model. $beta_0$ and $beta_1$ are usually equal to or not equal to zero.
+
+$b_0$ - $beta_{00}$
+
+This is the PT function
+
+```{r}
+plot(speed~dist, data = cars)
+cars.lm <- lm(speed ~ dist, data = cars)
+summary(cars.lm)
+
+#this is the way we calculate our p-value by hand
+#Pr(>\t\) just means that the probablility is two-tailed 
+
+2*pt(9.474, 48, lower.tail = FALSE)
+
+#this is calculating the critical value. 0.25 is our alpha or level of significance
+qt(1-0.25/2, 48)
+
+#This is the confidence interval equation and margin of error
+#  b0 +or- t(1-a/2; n-2)S{b0}
+
+8.28391 + qt(1-0.05/2, 48)*0.87438
+8.28391 - qt(1-0.05/2, 48)*0.87438
+
+confint(cars.lm)
+
+```
 
 ## Reading Points <span id=headpoints>{40} Possible</span>
 
