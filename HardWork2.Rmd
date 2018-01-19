@@ -27,7 +27,7 @@ $b_0$ - $beta_{00}$
 
 This is the PT function
 
-```{r}
+```{r echo=TRUE}
 plot(speed~dist, data = cars)
 cars.lm <- lm(speed ~ dist, data = cars)
 summary(cars.lm)
