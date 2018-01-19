@@ -48,6 +48,18 @@ qt(1-0.25/2, 48)
 
 confint(cars.lm)
 
+#this is how to calculate the residuals
+
+sum(cars.lm$residuals^2)
+
+sqrt(sum(cars.lm$residuals^2)/48)
+
+#prediction interval
+predict(cars.lm, data.frame(dist=50), interval = "prediction")
+
+predict(cars.lm, data.frame(dist=50), interval = "confidence")
+
+
 ```
 
 ## Reading Points <span id=headpoints>{40} Possible</span>
