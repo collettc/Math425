@@ -48,6 +48,7 @@ qt(1-0.25/2, 48)
 
 confint(cars.lm)
 
+#Also confint(cars.lm, level = (confidence interval))
 #this is how to calculate the residuals
 
 sum(cars.lm$residuals^2)
@@ -70,15 +71,15 @@ predict(cars.lm, data.frame(dist=50), interval = "confidence")
 
 ### Section 2.3 <span id=recpoints>{1}</span><span id=report>{ 1/1 }</span>
 
-### Section 2.4 <span id=recpoints>{4}</span><span id=report>{ / }</span>
+### Section 2.4 <span id=recpoints>{4}</span><span id=report>{ 3/4}</span>
 
-### Section 2.5 <span id=recpoints>{6}</span><span id=report>{ / }</span>
+### Section 2.5 <span id=recpoints>{6}</span><span id=report>{ 5/ 6}</span>
 
-### Section 2.6 <span id=recpoints>{3}</span><span id=report>{ / }</span>
+### Section 2.6 <span id=recpoints>{3}</span><span id=report>{ 3/3}</span>
 
-### Section 2.7 <span id=recpoints>{8}</span><span id=report>{ / }</span>
+### Section 2.7 <span id=recpoints>{8}</span><span id=report>{ 5/ 8}</span>
 
-### Section 2.8 <span id=recpoints>{4}</span><span id=report>{ / }</span>
+### Section 2.8 <span id=recpoints>{4}</span><span id=report>{ 1/ 4}</span>
 
 ### Section 2.9 <span id=recpoints>{3}</span><span id=report>{ / }</span>
 
