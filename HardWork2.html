@@ -197,6 +197,19 @@ qt(1-0.25/2, 48)</code></pre>
 <pre><code>##                 2.5 %     97.5 %
 ## (Intercept) 6.5258378 10.0419735
 ## dist        0.1303926  0.2007426</code></pre>
+<pre class="r"><code>#this is how to calculate the residuals
+
+sum(cars.lm$residuals^2)</code></pre>
+<pre><code>## [1] 478.0212</code></pre>
+<pre class="r"><code>sqrt(sum(cars.lm$residuals^2)/48)</code></pre>
+<pre><code>## [1] 3.155753</code></pre>
+<pre class="r"><code>#prediction interval
+predict(cars.lm, data.frame(dist=50), interval = &quot;prediction&quot;)</code></pre>
+<pre><code>##        fit      lwr      upr
+## 1 16.56228 10.14933 22.97524</code></pre>
+<pre class="r"><code>predict(cars.lm, data.frame(dist=50), interval = &quot;confidence&quot;)</code></pre>
+<pre><code>##        fit     lwr      upr
+## 1 16.56228 15.6316 17.49297</code></pre>
 </div>
 <div id="reading-points-40-possible" class="section level2">
 <h2>Reading Points <span id="headpoints">{40} Possible</span></h2>
