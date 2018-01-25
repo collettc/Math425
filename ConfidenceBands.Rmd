@@ -1,0 +1,77 @@
+---
+title: "Confidence Bands"
+output: 
+  html_document:
+    code_folding: hide
+---
+
+## Formula (p. 61)
+
+$$
+  \hat{Y}_h \pm W\, s\{\hat{Y}_h\} \quad (2.40)
+$$
+where 
+$$
+  W^2 = 2F(1-\alpha; 2, n-2) \quad (2.40a)
+$$
+and
+$$
+  s^2\{\hat{Y}_h\} = MSE\left[\frac{1}{n} + \frac{(X_h-\bar{X})^2}{\sum(X_i - \bar{X})^2}\right] \quad (2.30)
+$$
+
+<br/>
+
+Click the button to the right to see the `confbands` function.
+
+```{r}
+# Create a confidence bands function:
+confbands <- function(lmObject, xh=NULL, alpha=0.05){
+  
+  # Use some fancy code to get the data out of the lmObject
+  # while knowing which variable was x and which was y.
+  thecall <- strsplit(as.character(lmObject$call[2]), "~")
+  yname <- gsub(" ", "", thecall[[1]][1])
+  xname <- gsub(" ", "", thecall[[1]][2])
+  theData <- lmObject$model
+  theData <- theData[,c(yname,xname)]
+  colnames(theData) <- c("Y","X")
+
+  # Begin creating confidence bands  
+  n <- nrow(theData)
+  W2 <- 2*qf(1-alpha, 2, n-2)
+  SSE <- sum( lmObject$res^2 )
+  MSE <- SSE/(n-2)
+  s2.Yhat.h <- function(xh){
+    MSE*(1/n + (xh - mean(theData$X))^2/sum( (theData$X - mean(theData$X))^2 ))
+  }
+  b <- coef(lmObject)
+  
+  # Add upper bound to scatterplot
+  curve(b[1]+b[2]*x + W2*sqrt(s2.Yhat.h(x)), add=TRUE)
+
+  # Add lower bound to scatterplot
+  curve((b[1]+b[2]*x) - W2*sqrt(s2.Yhat.h(x)), add=TRUE)
+  
+  if (!is.null(xh)){
+    tmp <- c(b[1]+b[2]*xh - W2*sqrt(s2.Yhat.h(xh)), b[1]+b[2]*xh + W2*s2.Yhat.h(xh))
+    names(tmp) <- c("Lower","Upper")
+    tmp
+  }
+}
+```
+
+
+```{r}
+# Scatterplot and fitted regression line:
+plot(speed ~ dist, data=cars)
+cars.lm <- lm(speed ~ dist, data=cars)
+abline(cars.lm)
+
+# Add the confidence bands to the plot
+confbands(cars.lm)
+
+# Get the confidence bands value for some xh
+confbands(cars.lm, xh=25)
+
+
+```

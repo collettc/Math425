@@ -79,11 +79,11 @@ predict(cars.lm, data.frame(dist=50), interval = "confidence")
 
 ### Section 2.7 <span id=recpoints>{8}</span><span id=report>{ 5/ 8}</span>
 
-### Section 2.8 <span id=recpoints>{4}</span><span id=report>{ 1/ 4}</span>
+### Section 2.8 <span id=recpoints>{4}</span><span id=report>{ 2/ 4}</span>
 
-### Section 2.9 <span id=recpoints>{3}</span><span id=report>{ / }</span>
+### Section 2.9 <span id=recpoints>{3}</span><span id=report>{ 2/3 }</span>
 
-### Section 2.10 <span id=recpoints>{2}</span><span id=report>{ / }</span>
+### Section 2.10 <span id=recpoints>{2}</span><span id=report>{ 2/2 }</span>
 
 
 <br/>
@@ -112,15 +112,65 @@ predict(cars.lm, data.frame(dist=50), interval = "confidence")
 
 ### Problem 2.20 or 2.21 or 2.22 <span id=points>{1}</span><span id=report>{ / }</span>
 
-### Problem 2.33 <span id=recpoints>{3}</span><span id=report>{ / }</span>
+### Problem 2.33 <span id=recpoints>{3}</span><span id=report>{ 3/3 }</span>
 
+a.
+$$
+H_0 = 0
+H_a neq 0
+$$
+
+b. 
+
+Full Model:
+$$
+y_i = \beta_0 + \beta_1x_i + \epsilon_i
+$$
+Reduced model:
+$$
+y_i = \beta_0 +\epsilon_i
+$$
+
+c.
+We cannot determine dfr - dff because we don't have a sample size for the data. 
 ### Problem 2.50 <span id=points>{2}</span><span id=report>{ / }</span>
 
 ### Problem 2.51 <span id=points>{2}</span><span id=report>{ / }</span>
 
 ### Problem 2.53 <span id=points>{4}</span><span id=report>{ / }</span>
 
-### Problem 2.66 <span id=recpoints>{5}</span><span id=report>{ / }</span> 
+### Problem 2.66 <span id=recpoints>{5}</span><span id=report>{ 3/5 }</span> 
+
+a. 
+
+```{r}
+
+x <- c(4,8,12,16,20)
+
+e <- rnorm(5, 0, sqrt(25))
+
+
+y <- 20 + 4 * x + e
+
+p2.66.lm <- lm(y~x)
+
+plot(e ~ x)
+
+abline(p2.66.lm)
+
+b <- p2.66.lm$coefficients
+
+print(b)
+
+
+
+predict(p2.66.lm, data.frame(x=10), interval = "confidence")
+```
+
+``{r}
+for (i in vector)
+``
+b. 
 
 <span id=note>R-Code Hint: rnorm(5, 0, sqrt(25))</span>
 
@@ -143,7 +193,7 @@ predict(cars.lm, data.frame(dist=50), interval = "confidence")
 
 ### Problem 2.1 <span id=points>{1}</span><span id=report>{ / }</span>
 
-### Problem 2.4 <span id=recpoints>{4}</span><span id=report>{ / }</span>
+### Problem 2.4 <span id=recpoints>{4}</span><span id=report>{ 2/4 }</span>
 
 ```{r p4}
 # Load the Data:
@@ -151,10 +201,29 @@ p1.19 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutn
 
 # Rewrite the column names to be "Y" and "X" to match the textbook:
 colnames(p1.19) <- c("Y","X")
+
+p1.19.lm <- lm(p1.19)
+
+confint(p1.19.lm, level = 0.99)
+
+print(confint(p1.19.lm, level = 0.99))
+
+qt(1-0.01/2, 120-2, lower.tail = FALSE)
 ```
 
+a. our 99% confidence interval for $\beta_0$ is:
 
-### Problem 2.5 <span id=recpoints>{4}</span><span id=report>{ / }</span> 
+0.00538 < Y < 0.72268
+
+b. 
+-2.618137
+
+t(1-$\alpha$/2; n-2)
+
+we conclude the alternative
+
+
+### Problem 2.5 <span id=recpoints>{4}</span><span id=report>{ 1/4 }</span> 
 
 ```{r p5}
 # Load the Data:
@@ -162,8 +231,19 @@ p1.20 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutn
 
 # Rewrite the column names to be "Y" and "X" to match the textbook:
 colnames(p1.20) <- c("Y","X")
+
+plot(Y ~ X, data = p1.20 )
+
+p1.20.lm <- lm(p1.20)
+
+abline(p1.20.lm)
+
+summary(p1.20.lm)
+
+
 ```
 
+a. It is estimated that there is an increased 15.04 for every printer that is serviced.
 
 ### Problem 2.7 <span id=points>{3}</span><span id=report>{ / }</span> 
 
@@ -176,10 +256,17 @@ colnames(p1.22) <- c("Y","X")
 ```
 
 
-### Problem 2.10 <span id=recpoints>{2}</span><span id=report>{ / }</span> 
+### Problem 2.10 <span id=recpoints>{2}</span><span id=report>{ 2/2 }</span> 
+
+a. It is appropriate because there are multiple times when the temperature could be set to 31 degrees  
+
+b. It depends on the size of the population. If we're are sampling the entire U.S. population, I would say yes because there could be several families that would have the same income, but if it was just a city or region, I would say no. 
+
+c.Yes, because the x value will remain the same and we can have a confidence interval when there are multiple yi values for the same x value. 
 
 
-### Problem 2.13 <span id=recpoints>{4}</span><span id=report>{ / }</span> 
+
+### Problem 2.13 <span id=recpoints>{4}</span><span id=report>{ 3/4 }</span> 
 
 ```{r p13}
 # Load the Data:
@@ -187,7 +274,83 @@ p1.19 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutn
 
 # Rewrite the column names to be "Y" and "X" to match the textbook:
 colnames(p1.19) <- c("Y","X")
+
+plot(Y~X, data = p1.19)
+
+summary(p1.19.lm)
+
+abline(p1.19.lm)
 ```
+
+yi = 2.11405 + 0.03883 *28  
+
+ACT = 28
+GPA = 3.20129
+
+```{r}
+confint(p1.19.lm)
+
+predict(p1.19.lm, data.frame(X=28), interval = "confidence")
+
+predict(p1.19.lm, data.frame(X=28), interval = "prediction")
+
+```
+
+a.
+This means that we are 95% confident that the mean for a Freshman GPA who's ACT score is 28 is between 3.0613 and 3.410
+
+b. 
+This means that we are 95% confident that her GPA will be between 1.959 and 4.443063. This doesn't mean a lot because it's impossible to get above a 4.0.
+
+c.
+The prediction interval is greater than the confidence interval.
+
+d.
+
+```{r}
+
+# Create a confidence bands function:
+confbands <- function(lmObject, xh=NULL, alpha=0.05){
+  
+  # Use some fancy code to get the data out of the lmObject
+  # while knowing which variable was x and which was y.
+  thecall <- strsplit(as.character(lmObject$call[2]), "~")
+  yname <- gsub(" ", "", thecall[[1]][1])
+  xname <- gsub(" ", "", thecall[[1]][2])
+  theData <- lmObject$model
+  theData <- theData[,c(yname,xname)]
+  colnames(theData) <- c("Y","X")
+
+  # Begin creating confidence bands  
+  n <- nrow(theData)
+  W2 <- 2*qf(1-alpha, 2, n-2)
+  SSE <- sum( lmObject$res^2 )
+  MSE <- SSE/(n-2)
+  s2.Yhat.h <- function(xh){
+    MSE*(1/n + (xh - mean(theData$X))^2/sum( (theData$X - mean(theData$X))^2 ))
+  }
+  b <- coef(lmObject)
+  
+  # Add upper bound to scatterplot
+  curve(b[1]+b[2]*x + W2*sqrt(s2.Yhat.h(x)), add=TRUE)
+
+  # Add lower bound to scatterplot
+  curve((b[1]+b[2]*x) - W2*sqrt(s2.Yhat.h(x)), add=TRUE)
+  
+  if (!is.null(xh)){
+    tmp <- c(b[1]+b[2]*xh - W2*sqrt(s2.Yhat.h(xh)), b[1]+b[2]*xh + W2*s2.Yhat.h(xh))
+    names(tmp) <- c("Lower","Upper")
+    tmp
+  }
+}
+
+
+plot(Y~Y, data = p1.19)
+abline(p1.19.lm)
+confbands(p1.19.lm, xh=28)
+```
+
+
 
 
 ### Problem 2.14 <span id=points>{4}</span><span id=report>{ / }</span> 
@@ -212,7 +375,7 @@ colnames(p1.21) <- c("Y","X")
 ```
 
 
-### Problem 2.16 <span id=recpoints>{5}</span><span id=report>{ / }</span> 
+### Problem 2.16 <span id=recpoints>{5}</span><span id=report>{ 3/5 }</span> 
 
 ```{r p16}
 # Load the Data:
@@ -220,21 +383,51 @@ p1.22 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutn
 
 # Rewrite the column names to be "Y" and "X" to match the textbook:
 colnames(p1.22) <- c("Y","X")
+
+plot(Y~X, data = p1.22)
+
+p1.22.lm <- lm(p1.22)
+
+abline(p1.22.lm)
+
+predict(p1.22.lm, data.frame(X=30), level = 0.98, interval = "confidence")
+
+predict(p1.22.lm, data.frame(X=30), level = 0.98, interval = "prediction")
+
+predict(p1.22.lm, data.frame(X=30), level = 0.98, interval = "prediction")
+
 ```
+a.
+b.
+c.
+d. It should be smaller because when we have a number of samples than according to the law of large numbers, we get closer to the truth. 
+e. 
 
 
-### Problem 2.25 <span id=recpoints>{5}</span><span id=report>{ / }</span>
+### Problem 2.25 <span id=recpoints>{5}</span><span id=report>{ 1/5 }</span>
 
 ```{r p25}
 # Load the Data:
-p1.20 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutner/Chapter%20%201%20Data%20Sets/CH01PR20.txt")
+p1.21 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutner/Chapter%20%201%20Data%20Sets/CH01PR20.txt")
 
 # Rewrite the column names to be "Y" and "X" to match the textbook:
-colnames(p1.20) <- c("Y","X")
+colnames(p1.21) <- c("Y","X")
+
+p1.21.lm <- lm(p1.21)
+
+p1.21.aov <- aov(Y ~ X, data = p1.21)
+
+summary(p1.21.aov)
+
+plot(p1.21.aov, which = 1:2)
+
 ```
 
+a. I don't know what this means. 
+b.
 
-### Problem 2.26 <span id=recpoints>{4}</span><span id=report>{ / }</span>
+
+### Problem 2.26 <span id=recpoints>{4}</span><span id=report>{ /4 }</span>
 
 ```{r p26}
 # Load the Data:
