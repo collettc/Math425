@@ -27,7 +27,12 @@ $b_0$ - $beta_{00}$
 
 This is the PT function
 
-```{r echo=TRUE}
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+library(mosaic)
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+
 plot(speed~dist, data = cars)
 cars.lm <- lm(speed ~ dist, data = cars)
 summary(cars.lm)
@@ -65,7 +70,7 @@ predict(cars.lm, data.frame(dist=50), interval = "confidence")
 
 ## Reading Points <span id=headpoints>{40} Possible</span>
 
-### Section 2.1 <span id=recpoints>{6}</span><span id=report>{ 3/6 }</span>
+### Section 2.1 <span id=recpoints>{6}</span><span id=report>{ 5/6 }</span>
 
 ### Section 2.2 <span id=recpoints>{3}</span><span id=report>{ 3/3 }</span>
 
@@ -77,11 +82,11 @@ predict(cars.lm, data.frame(dist=50), interval = "confidence")
 
 ### Section 2.6 <span id=recpoints>{3}</span><span id=report>{ 3/3}</span>
 
-### Section 2.7 <span id=recpoints>{8}</span><span id=report>{ 5/ 8}</span>
+### Section 2.7 <span id=recpoints>{8}</span><span id=report>{ 6/ 8}</span>
 
-### Section 2.8 <span id=recpoints>{4}</span><span id=report>{ 2/ 4}</span>
+### Section 2.8 <span id=recpoints>{4}</span><span id=report>{ 3/ 4}</span>
 
-### Section 2.9 <span id=recpoints>{3}</span><span id=report>{ 2/3 }</span>
+### Section 2.9 <span id=recpoints>{3}</span><span id=report>{ 3/3 }</span>
 
 ### Section 2.10 <span id=recpoints>{2}</span><span id=report>{ 2/2 }</span>
 
@@ -117,6 +122,8 @@ predict(cars.lm, data.frame(dist=50), interval = "confidence")
 a.
 $$
 H_0 = 0
+$$
+$$
 H_a neq 0
 $$
 
@@ -154,10 +161,6 @@ y <- 20 + 4 * x + e
 
 p2.66.lm <- lm(y~x)
 
-plot(e ~ x)
-
-abline(p2.66.lm)
-
 b <- p2.66.lm$coefficients
 
 print(b)
@@ -193,7 +196,7 @@ b.
 
 ### Problem 2.1 <span id=points>{1}</span><span id=report>{ / }</span>
 
-### Problem 2.4 <span id=recpoints>{4}</span><span id=report>{ 2/4 }</span>
+### Problem 2.4 <span id=recpoints>{4}</span><span id=report>{ 4/4 }</span>
 
 ```{r p4}
 # Load the Data:
@@ -204,11 +207,13 @@ colnames(p1.19) <- c("Y","X")
 
 p1.19.lm <- lm(p1.19)
 
+summary(p1.19.lm)
+
 confint(p1.19.lm, level = 0.99)
 
 print(confint(p1.19.lm, level = 0.99))
 
-qt(1-0.01/2, 120-2, lower.tail = FALSE)
+qt(1-0.01/2, length(p1.19$X-2))
 ```
 
 a. our 99% confidence interval for $\beta_0$ is:
@@ -216,14 +221,25 @@ a. our 99% confidence interval for $\beta_0$ is:
 0.00538 < Y < 0.72268
 
 b. 
--2.618137
 
-t(1-$\alpha$/2; n-2)
+$H_0: \beta_1 = 0$
+$H_a: \beta_1 \ne 0$
 
-we conclude the alternative
+If |t*| <= t(1-$\alpha$/2; n-2), conclude $H_o$
+If |t*| >= t(1-$\alpha$/2; n-2), conclude $H_a$
+
+t* = 3.040
+
+t = 2.618137
+
+conclude $H_o$
 
 
-### Problem 2.5 <span id=recpoints>{4}</span><span id=report>{ 1/4 }</span> 
+c. 
+
+Our P-value is : 0.00292
+
+### Problem 2.5 <span id=recpoints>{4}</span><span id=report>{ 4/4 }</span> 
 
 ```{r p5}
 # Load the Data:
@@ -232,18 +248,38 @@ p1.20 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutn
 # Rewrite the column names to be "Y" and "X" to match the textbook:
 colnames(p1.20) <- c("Y","X")
 
-plot(Y ~ X, data = p1.20 )
-
 p1.20.lm <- lm(p1.20)
-
-abline(p1.20.lm)
 
 summary(p1.20.lm)
 
-
+qt(1-0.90/2, length(p1.20$X) - 2)
 ```
 
 a. It is estimated that there is an increased 15.04 for every printer that is serviced.
+
+b. 
+$H_0: \beta_1 = 0$
+$H_a: \beta_1 \ne 0$
+
+If |t*| <= t(1-$\alpha$/2; n-2), conclude $H_o$
+If |t*| >= t(1-$\alpha$/2; n-2), conclude $H_a$
+
+t* = 31/123
+
+t = 0.1264
+
+conclude $H_a$
+
+c. Yes, because we conclude that there is an association between the variables, we can assume that for every printer serviced, the time increases. 
+
+d.
+We see that $\beta1$ is equal to 15.0352. This means that they are one minute over. The P-value is low, so we can assume that this is appropriate. 
+
+e. $\beta0$ doesn't give any relevant information because we would have negative time used if that was the case and that's impossible. 
+
+
+
+
 
 ### Problem 2.7 <span id=points>{3}</span><span id=report>{ / }</span> 
 
@@ -275,11 +311,8 @@ p1.19 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutn
 # Rewrite the column names to be "Y" and "X" to match the textbook:
 colnames(p1.19) <- c("Y","X")
 
-plot(Y~X, data = p1.19)
-
 summary(p1.19.lm)
 
-abline(p1.19.lm)
 ```
 
 yi = 2.11405 + 0.03883 *28  
@@ -307,7 +340,7 @@ The prediction interval is greater than the confidence interval.
 
 d.
 
-```{r}
+``{r}
 
 # Create a confidence bands function:
 confbands <- function(lmObject, xh=NULL, alpha=0.05){
@@ -348,7 +381,7 @@ confbands <- function(lmObject, xh=NULL, alpha=0.05){
 plot(Y~Y, data = p1.19)
 abline(p1.19.lm)
 confbands(p1.19.lm, xh=28)
-```
+``
 
 
 
@@ -384,11 +417,7 @@ p1.22 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutn
 # Rewrite the column names to be "Y" and "X" to match the textbook:
 colnames(p1.22) <- c("Y","X")
 
-plot(Y~X, data = p1.22)
-
 p1.22.lm <- lm(p1.22)
-
-abline(p1.22.lm)
 
 predict(p1.22.lm, data.frame(X=30), level = 0.98, interval = "confidence")
 
@@ -396,38 +425,78 @@ predict(p1.22.lm, data.frame(X=30), level = 0.98, interval = "prediction")
 
 predict(p1.22.lm, data.frame(X=30), level = 0.98, interval = "prediction")
 
+
+
 ```
-a.
-b.
+
+a. The mean hardness for plastics that are left in for 30 hours is between 227.4569 and 231.8056 at a confidence interval of 0.98. 
+
+b. The prediction interval for hardness for a piece left in for 30 hours is between 220.8695 and 238.393.
+
 c.
+
 d. It should be smaller because when we have a number of samples than according to the law of large numbers, we get closer to the truth. 
 e. 
 
 
-### Problem 2.25 <span id=recpoints>{5}</span><span id=report>{ 1/5 }</span>
+### Problem 2.25 <span id=recpoints>{5}</span><span id=report>{ 5/5 }</span>
 
 ```{r p25}
 # Load the Data:
-p1.21 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutner/Chapter%20%201%20Data%20Sets/CH01PR20.txt")
+p1.20 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutner/Chapter%20%201%20Data%20Sets/CH01PR20.txt")
 
 # Rewrite the column names to be "Y" and "X" to match the textbook:
-colnames(p1.21) <- c("Y","X")
+colnames(p1.20) <- c("Y","X")
 
 p1.21.lm <- lm(p1.21)
 
-p1.21.aov <- aov(Y ~ X, data = p1.21)
+summary(p1.21.lm)
 
-summary(p1.21.aov)
+qf(1-0.05, 1, length(p1.21$X)-2)
 
-plot(p1.21.aov, which = 1:2)
+anova(p1.21.lm)
 
 ```
 
-a. I don't know what this means. 
-b.
+a. 
 
 
-### Problem 2.26 <span id=recpoints>{4}</span><span id=report>{ /4 }</span>
+b. 
+$H_0: \beta_1 = 0$
+$H_a: \beta_1 \ne 0$
+
+F* = 72.727
+
+If F* <= F((1-$\alpha$; 1, n -2)) then conclude $H_0$
+If F* >= F((1-$\alpha$; 1, n -2)) then conclude $H_a$ 
+
+We conclude the alternative hypothesis.
+
+c. What is t* for the test in b what 
+
+```{r}
+sqrt(72.727)
+```
+
+
+8.528
+
+d. Calculate R2 and r. What proportion of the variation in Y is accounted for by introducing X into the regression model?
+
+```{r}
+
+SSTO <- 160 + 17.6
+
+160 / SSTO
+
+sqrt(160/SSTO)
+
+```
+
+R^2 = 0.9009
+r = 0.9491
+
+### Problem 2.26 <span id=recpoints>{4}</span><span id=report>{ 4/4 }</span>
 
 ```{r p26}
 # Load the Data:
@@ -435,10 +504,65 @@ p1.22 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutn
 
 # Rewrite the column names to be "Y" and "X" to match the textbook:
 colnames(p1.22) <- c("Y","X")
+
+
+p1.22.lm <- lm(Y~X, data = p1.22)
+
+
+anova(p1.22.lm)
+
+ssto <- 5297.5 + 146.4
+
+5297.5 / SSTO
+
+sqrt(160/SSTO)
+
+qf(1-0.01, 1, length(p1.22$X) - 2)
+
+
+```
+a. done
+b. 
+$H_0: \beta_1 = 0$
+$H_a: \beta_1 \ne 0$
+
+F* = 506.51
+
+If F* <= F((1-$\alpha$; 1, n -2)) then conclude $H_0$
+If F* >= F((1-$\alpha$; 1, n -2)) then conclude $H_a$ 
+F((1-$\alpha$; 1, n -2)) = 8.86159
+
+
+We conclude $H_a$
+
+c. 
+
+```{r}
+sse <- p1.22$Y + p1.22.lm$residuals
+ssr <- p1.22$Y + (p1.22.lm$residuals - mean(p1.22$Y))
+
+ggplot(p1.22, aes(x = X, y = Y)) +
+  geom_point() +
+  geom_point(aes(x = X, y = sse, color = "red")) +
+  geom_point(aes(x = X, y = ssr, color = "blue"))+
+  stat_smooth(method = "lm", col = "red")
+
+r2 <- sum(ssr)^2 / sum(p1.22$Y - mean(p1.22$Y))^2 
+
+sqrt( 0.9712)
+
 ```
 
+I know that the points don't line up exactly, but it seems that SSR has a smaller spread than the SSE. Therefore, I would assume that SSE is a greater component to SSTO. This means that R^2 is closer to zero. 
 
-### Problem 2.29 <span id=recpoints>{5}</span><span id=report>{ / }</span> 
+d. 
+
+R2 = 0.9712
+r = 0.98549
+
+
+
+### Problem 2.29 <span id=recpoints>{5}</span><span id=report>{ 4/ 5}</span> 
 
 ```{r p29}
 # Load the Data:
@@ -446,8 +570,53 @@ p1.27 <- read.table("https://netfiles.umn.edu/users/nacht001/www/nachtsheim/Kutn
 
 # Rewrite the column names to be "Y" and "X" to match the textbook:
 colnames(p1.27) <- c("Y","X")
+
+p1.27.lm <- lm(p1.27)
+
+
+ei <- p1.27$Y + p1.27.lm$residuals
+
+ssr <- 
+
+ggplot(p1.27, aes(x = X, y = Y)) +
+  geom_point() +
+  geom_point(aes(x = X, y = ei, color = "red")) +
+  stat_smooth(method = "lm", col = "red")
+
+p1.27.aov <- anova(p1.21.lm)
+
+p1.27.aov
+
+SSTO <- p1.27.aov$`Sum Sq`[1] + p1.27.aov$`Sum Sq`[2]
+
+R2 <- p1.27.aov$`Sum Sq`[1] / SSTO
+
+qf(1 - 0.05,1,length(p1.27$X))
+
+
+
 ```
 
+c
+
+$H_0: \beta_1 = 0$
+$H_a: \beta_1 \ne 0$
+
+F* = 72.727
+
+If F* <= F((1-$\alpha$; 1, n -2)) then conclude $H_0$
+If F* >= F((1-$\alpha$; 1, n -2)) then conclude $H_a$ 
+
+F((1-$\alpha$; 1, n -2)) = 4.001191
+
+We conclude $H_a$
+
+
+d. Not sure what this is asking
+
+e. 
+R2 = 0.9009009
+r = 0.949158
 
 ### Problem 2.30 <span id=points>{5}</span><span id=report>{ / }</span> 
 
