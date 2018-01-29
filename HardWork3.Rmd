@@ -1,0 +1,212 @@
+---
+title: "Hard Work 3"
+output: 
+  html_document:
+    theme: cerulean
+    toc: true
+    toc_float: true
+    code_folding: hide
+---
+
+## Instructions
+
+1. Study Sections 3.1-3.8 of Chapter 3: "Diagnostics and Remedial Measures."    
+<span id=note>(We will study more of Chapter 3 next week.)</span>
+
+
+2. Attempt and submit at least <span id=points style="padding-left:0px;">{52}</span> Hard Work Points by Saturday at 11:59 PM.    
+<span id=note>Over <span id=points style="padding-left:0px;">{56}</span> gets you {+1} Final Exam Point.</span>    
+<span id=note>Over <span id=points style="padding-left:0px;">{62}</span> gets you {+2} Final Exam Points.</span>    
+<span id=note>Over <span id=points style="padding-left:0px;">{70}</span> gets you {+3} Final Exam Points.</span>
+
+## Reading Points <span id=headpoints>{30} Possible</span>
+
+<div style="padding-left:20px;">
+
+### Section 3.1 <span id=recpoints>{2}</span><span id=report>{ / }</span>
+
+### Section 3.2 <span id=recpoints>{2}</span><span id=report>{ / }</span>
+
+### Section 3.3 <span id=recpoints>{8}</span><span id=report>{ / }</span>
+
+### Section 3.4 <span id=recpoints>{2}</span><span id=report>{ / }</span>
+
+### Section 3.5 <span id=recpoints>{2}</span><span id=report>{ / }</span>
+
+### Section 3.6 <span id=recpoints>{6}</span><span id=report>{ / }</span>
+
+### Section 3.7 <span id=recpoints>{7}</span><span id=report>{ / }</span>
+
+### Section 3.8 <span id=recpoints>{1}</span><span id=report>{ / }</span>
+
+</div>
+
+## Theory Points <span id=headpoints>{9} Possible</span>
+
+<div style="padding-left:20px;">
+
+### 3.1 <span id=recpoints>{2}</span><span id=report>{ / }</span>
+ 
+### 3.12 <span id=points>{2}</span><span id=report>{ / }</span>
+
+### 3.21 <span id=points>{3}</span><span id=report>{ / }</span>
+
+### 3.23 <span id=points>{2}</span><span id=report>{ / }</span>
+
+
+</div>
+
+
+## Application Points <span id=headpoints>{32} Possible</span>
+
+<div style="padding-left:20px;">
+
+<a id=datalink style="font-size:.9em;" target="_blank" href=http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/textdatasets/index.html>Data Files</a>
+
+### 3.3 <span id=recpoints>{6}</span><span id=report>{ / }</span>
+
+```{r p33}
+# Load the Data:
+p1.19 <- read.table("http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/textdatasets/KutnerData/Chapter%20%201%20Data%20Sets/CH01PR19.txt")
+
+# Rewrite the column names to be "Y" and "X" to match the textbook:
+colnames(p1.19) <- c("Y","X")
+```
+
+
+### 3.4 <span id=recpoints>{6}</span><span id=report>{ / }</span>
+
+```{r p34}
+# Load the Data:
+p1.20 <- read.table("http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/textdatasets/KutnerData/Chapter%20%201%20Data%20Sets/CH01PR20.txt")
+
+# Rewrite the column names to be "Y" and "X" to match the textbook:
+colnames(p1.20) <- c("Y","X")
+```
+
+
+### 3.5 <span id=recpoints>{5}</span><span id=report>{ / }</span>
+
+```{r p35}
+# Load the Data:
+p1.21 <- read.table("http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/textdatasets/KutnerData/Chapter%20%201%20Data%20Sets/CH01PR21.txt")
+
+# Rewrite the column names to be "Y" and "X" to match the textbook:
+colnames(p1.21) <- c("Y","X")
+```
+
+
+### 3.6 <span id=points>{5}</span><span id=report>{ / }</span>
+
+```{r p36}
+# Load the Data:
+p1.22 <- read.table("http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/textdatasets/KutnerData/Chapter%20%201%20Data%20Sets/CH01PR22.txt")
+
+# Rewrite the column names to be "Y" and "X" to match the textbook:
+colnames(p1.22) <- c("Y","X")
+```
+
+
+### 3.7 <span id=points>{4}</span><span id=report>{ / }</span>
+
+```{r p37}
+# Load the Data:
+p1.27 <- read.table("http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/textdatasets/KutnerData/Chapter%20%201%20Data%20Sets/CH01PR27.txt")
+
+# Rewrite the column names to be "Y" and "X" to match the textbook:
+colnames(p1.27) <- c("Y","X")
+```
+
+
+### 3.8 <span id=points>{3}</span><span id=report>{ / }</span>
+
+```{r p38}
+# Load the Data:
+p1.28 <- read.table("http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/textdatasets/KutnerData/Chapter%20%201%20Data%20Sets/CH01PR28.txt")
+
+# Rewrite the column names to be "Y" and "X" to match the textbook:
+colnames(p1.28) <- c("Y","X")
+```
+
+
+### 3.13 <span id=recpoints>{3}</span><span id=report>{ / }</span>
+
+```{r p313}
+# Load the Data:
+p1.20 <- read.table("http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/textdatasets/KutnerData/Chapter%20%201%20Data%20Sets/CH01PR20.txt")
+
+# Rewrite the column names to be "Y" and "X" to match the textbook:
+colnames(p1.20) <- c("Y","X")
+```
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+ <style>
+#points {
+  font-size:.8em;
+  padding-left:5px;
+  font-weight:bold; 
+  color:#317eac;
+}
+
+#recpoints {
+  font-size:.8em;
+  padding-left:5px;
+  font-weight:bold; 
+  color:#7eac31;
+}
+
+#report {
+  font-size:.7em;
+  padding-left:15px;
+  font-weight:normal; 
+  color:#5a5a5a;
+}
+
+#datalink {
+  font-size:.5em;
+  color:#317eac;
+  padding-left:5px;
+}
+
+#headnote {
+  font-size:.6em;
+  color:#787878;
+}
+
+#note {
+  font-size:.8em;
+  color:#787878;
+}
+
+#headpoints {
+ font-size:12pt;
+ color: #585858; 
+ padding-left: 15px;
+}
+</style>
+
+
+<footer>
+</footer>
+
+
+
+ 
+
+ 
+
+ 
+
+ 
