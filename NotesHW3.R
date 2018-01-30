@@ -31,7 +31,7 @@ boxplot(cars.lm$residuals)
 plot(cars.lm$residuals, type = 'b', pch = 16, cex = 0.8)
 
 par(mfrow = c(2,1))
-plot(cars.lm, which  = 1:2)
+plot(cars.lm, which  = 1:6)
 
 #residuals verses x
 

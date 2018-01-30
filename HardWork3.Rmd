@@ -23,11 +23,11 @@ output:
 
 <div style="padding-left:20px;">
 
-### Section 3.1 <span id=recpoints>{2}</span><span id=report>{ / }</span>
+### Section 3.1 <span id=recpoints>{2}</span><span id=report>{ 2/2}</span>
 
-### Section 3.2 <span id=recpoints>{2}</span><span id=report>{ / }</span>
+### Section 3.2 <span id=recpoints>{2}</span><span id=report>{ 1.5/2 }</span>
 
-### Section 3.3 <span id=recpoints>{8}</span><span id=report>{ / }</span>
+### Section 3.3 <span id=recpoints>{8}</span><span id=report>{ 7/8}</span>
 
 ### Section 3.4 <span id=recpoints>{2}</span><span id=report>{ / }</span>
 
@@ -45,7 +45,21 @@ output:
 
 <div style="padding-left:20px;">
 
-### 3.1 <span id=recpoints>{2}</span><span id=report>{ / }</span>
+### 3.1 <span id=recpoints>{2}</span><span id=report>{ 1/2 }</span>
+
+The residual is the distance between $Y_i$ and $Yhat_i$.which is represented by $e_i = Y_i - Yhat_i$
+
+The studentized residual is the 
+
+$$
+e*_i = (e_i - ebar) \div (sqrt(MSE))
+$$
+
+$\sigma$ = sqrt(MES) = $\sum(Y_i - Yhat_i)/sqrt(n - 2)$
+
+The purpose of the semistudentized residual is to simplify residuals. $e_i$ is complex because it's for each individual error term. $e*_i$ allows us to use one measurement for each all points. 
+
+
  
 ### 3.12 <span id=points>{2}</span><span id=report>{ / }</span>
 
@@ -63,7 +77,7 @@ output:
 
 <a id=datalink style="font-size:.9em;" target="_blank" href=http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/textdatasets/index.html>Data Files</a>
 
-### 3.3 <span id=recpoints>{6}</span><span id=report>{ / }</span>
+### 3.3 <span id=recpoints>{6}</span><span id=report>{ 3/6 }</span>
 
 ```{r p33}
 # Load the Data:
@@ -71,10 +85,29 @@ p1.19 <- read.table("http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/
 
 # Rewrite the column names to be "Y" and "X" to match the textbook:
 colnames(p1.19) <- c("Y","X")
+
+p1.19.lm <- lm(p1.19)
+
+boxplot(p1.19.lm$residuals)
+
+plot(p1.19.lm$residuals, pch = 16, cex = 0.8)
+
+plot(p1.19.lm$residuals ~ p1.19$X)
+
+plot(p1.19.lm, which  = 2:2)
+
 ```
 
+a. It seems that there are some outliers due to the points laying almost 3 standard deviations away from the mean. 
 
-### 3.4 <span id=recpoints>{6}</span><span id=report>{ / }</span>
+b. This plot shows that there is an outlier in the point that is ranked around 8 or 9. 
+
+c. It seems that there is constant variance in this structure. This shows that there is consant variance and the error terms are normally distributed
+
+d. 
+
+
+### 3.4 <span id=recpoints>{6}</span><span id=report>{ /6 }</span>
 
 ```{r p34}
 # Load the Data:
@@ -82,6 +115,11 @@ p1.20 <- read.table("http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/
 
 # Rewrite the column names to be "Y" and "X" to match the textbook:
 colnames(p1.20) <- c("Y","X")
+
+p1.20.lm <- lm(p1.20)
+
+stem(p1.20$X, scale = 1)
+
 ```
 
 
