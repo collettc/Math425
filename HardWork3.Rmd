@@ -8,6 +8,13 @@ output:
     code_folding: hide
 ---
 
+```{r}
+library(car)
+library(mosaic)
+library(ggplot2)
+library(lmtest)
+```
+
 ## Instructions
 
 1. Study Sections 3.1-3.8 of Chapter 3: "Diagnostics and Remedial Measures."    
@@ -29,15 +36,15 @@ output:
 
 ### Section 3.3 <span id=recpoints>{8}</span><span id=report>{ 7/8}</span>
 
-### Section 3.4 <span id=recpoints>{2}</span><span id=report>{ / }</span>
+### Section 3.4 <span id=recpoints>{2}</span><span id=report>{ 2/2 }</span>
 
-### Section 3.5 <span id=recpoints>{2}</span><span id=report>{ / }</span>
+### Section 3.5 <span id=recpoints>{2}</span><span id=report>{ 2/2 }</span>
 
-### Section 3.6 <span id=recpoints>{6}</span><span id=report>{ / }</span>
+### Section 3.6 <span id=recpoints>{6}</span><span id=report>{ 4/6 }</span>
 
-### Section 3.7 <span id=recpoints>{7}</span><span id=report>{ / }</span>
+### Section 3.7 <span id=recpoints>{7}</span><span id=report>{ 4/7 }</span>
 
-### Section 3.8 <span id=recpoints>{1}</span><span id=report>{ / }</span>
+### Section 3.8 <span id=recpoints>{1}</span><span id=report>{ 1/1 }</span>
 
 </div>
 
@@ -45,7 +52,7 @@ output:
 
 <div style="padding-left:20px;">
 
-### 3.1 <span id=recpoints>{2}</span><span id=report>{ 1/2 }</span>
+### 3.1 <span id=recpoints>{2}</span><span id=report>{ 2/2 }</span>
 
 The residual is the distance between $Y_i$ and $Yhat_i$.which is represented by $e_i = Y_i - Yhat_i$
 
@@ -57,7 +64,7 @@ $$
 
 $\sigma$ = sqrt(MES) = $\sum(Y_i - Yhat_i)/sqrt(n - 2)$
 
-The purpose of the semistudentized residual is to simplify residuals. $e_i$ is complex because it's for each individual error term. $e*_i$ allows us to use one measurement for each all points. 
+The purpose of the semistudentized residual is to simplify residuals. $e_i$ is complex because it's for each individual error term. $e*_i$ allows you to measure according to standard deviations instead of raw measurements. This helps give perspective. 
 
 
  
@@ -77,9 +84,9 @@ The purpose of the semistudentized residual is to simplify residuals. $e_i$ is c
 
 <a id=datalink style="font-size:.9em;" target="_blank" href=http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/textdatasets/index.html>Data Files</a>
 
-### 3.3 <span id=recpoints>{6}</span><span id=report>{ 3/6 }</span>
+### 3.3 <span id=recpoints>{6}</span><span id=report>{ 6/6 }</span>
 
-```{r p33}
+```{r p33, message=FALSE, warning=FALSE}
 # Load the Data:
 p1.19 <- read.table("http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/textdatasets/KutnerData/Chapter%20%201%20Data%20Sets/CH01PR19.txt")
 
@@ -88,13 +95,52 @@ colnames(p1.19) <- c("Y","X")
 
 p1.19.lm <- lm(p1.19)
 
-boxplot(p1.19.lm$residuals)
+boxplot(p1.19$X)
+
+names(p1.19.lm)
 
 plot(p1.19.lm$residuals, pch = 16, cex = 0.8)
 
-plot(p1.19.lm$residuals ~ p1.19$X)
+plot(p1.19.lm$residuals ~ p1.19.lm$fitted.values)
 
 plot(p1.19.lm, which  = 2:2)
+
+qq.p1.19 <- qqnorm(p1.19.lm$residuals)
+
+qqPlot(p1.19.lm$residuals)
+
+names(qq.p1.19)
+
+cor(qq.p1.19$x, qq.p1.19$y)
+
+Group1 <- p1.19$X < 26
+Group2 <- p1.19$X >= 26
+
+med1 <- median(p1.19.lm$residuals[Group1])
+med2 <- median(p1.19.lm$residuals[Group2])
+
+d1 <- abs(p1.19.lm$residuals[Group1] - med1)
+d2 <- abs(p1.19.lm$residuals[Group2] - med2)
+
+s2BF <- ( sum((d1-mean(d1))^2) + sum((d2 - mean(d2))^2))/(120-2)
+sBF <- sqrt(s2BF)
+tBF <- (mean(d1) - mean(d2))/(sBF*sqrt(1/sum(Group1)+1/sum(Group2)))
+
+
+qt(1-0.01/2, 120-2)
+
+tBF
+
+2*pt(-abs(tBF), 120-2)
+
+p1.19extra <- read.table("http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/textdatasets/KutnerData/Chapter%20%203%20Data%20Sets/CH03PR03.txt")
+
+colnames(p1.19extra) <- c("Y","X","X2","X3")
+
+
+plot(p1.19.lm$residuals ~ p1.19extra$X2, xlab = "IQ")
+plot(p1.19.lm$residuals ~ p1.19extra$X3, xlab = "Class Rank")
+
 
 ```
 
@@ -102,28 +148,82 @@ a. It seems that there are some outliers due to the points laying almost 3 stand
 
 b. This plot shows that there is an outlier in the point that is ranked around 8 or 9. 
 
-c. It seems that there is constant variance in this structure. This shows that there is consant variance and the error terms are normally distributed
+c. This should show no recognizable order which means that the relation between X and Y is linear. We can also check or outliers. This we can see that there is one. The data looks linear. 
 
-d. 
+d. Our correlation coefficient for x and y is 0.9744 and the critical value is 0.98. We conclude that the data is not normal. 
+
+e. Because the absolute value BF t statistic is less than our critical value, there is constant variance. 
+
+f. It looks like the IQ data should be included in the plot because it has an obvious pattern that would be beneficial to the original plot.
 
 
-### 3.4 <span id=recpoints>{6}</span><span id=report>{ /6 }</span>
+### 3.4 <span id=recpoints>{6}</span><span id=report>{ 5/6 }</span>
 
-```{r p34}
+```{r p34, message=FALSE, warning=FALSE}
 # Load the Data:
 p1.20 <- read.table("http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/textdatasets/KutnerData/Chapter%20%201%20Data%20Sets/CH01PR20.txt")
+
+p1.20extra <- read.table("http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/textdatasets/KutnerData/Chapter%20%203%20Data%20Sets/CH03PR04.txt")
+
+colnames(p1.20extra) <- c("Y","X","X2","X3")
 
 # Rewrite the column names to be "Y" and "X" to match the textbook:
 colnames(p1.20) <- c("Y","X")
 
 p1.20.lm <- lm(p1.20)
 
-stem(p1.20$X, scale = 1)
+stripchart(p1.20$X, method = 'stack', pch = 16)
+
+plot(p1.20.lm$residuals, type = 'b', pch = 16, cex = 0.8)
+
+stem(p1.20.lm$residuals)
+
+plot(p1.20.lm$residuals ~ p1.20.lm$fitted.values)
+
+plot(p1.20.lm, where = 1)
+
+plot(p1.20.lm$residuals ~ p1.20$X)
+
+plot(p1.20.lm, where = 1:3)
+
+qqPlot(p1.20.lm$residuals)
+
+qq.p1.20 <- qqnorm(p1.20.lm$residuals)
+
+names(qq.p1.20)
+
+cor(qq.p1.20$x, qq.p1.20$y)
+
+bptest(p1.20.lm)
+
+plot(p1.20extra$X2 ~ p1.20.lm$residuals)
+
+plot(p1.20extra$X3 ~ p1.20.lm$residuals)
 
 ```
 
+a. This shows that there are multiple observations with single xi values. There are no outliers. 
 
-### 3.5 <span id=recpoints>{5}</span><span id=report>{ / }</span>
+b. This shows that the errors are independent. Time is not a factor. 
+
+c. It looks like there may be some outliers. It may also be left-skewed. 
+
+d. They do provide the same information. X and Y seem to be linear and there are no outliers. 
+e. Critical Value = 0.977
+
+Correlation Coefficient = 0.9889
+
+We conclude that the data is normal. 
+
+f. They don't look like they're correlated over time. There is no serious trend of increase or decrease. 
+
+????g. If X2* < X2, then we conclude $H_o$
+
+because BP = 1.4187 and our p-value is 0.2336, we conclude the null. 
+
+h. In plotting these, it seems the the mean operational age of copiers serviced on the call has a significant effect on the data. It should be included. 
+
+### 3.5 <span id=recpoints>{5}</span><span id=report>{ 5/5 }</span>
 
 ```{r p35}
 # Load the Data:
@@ -131,7 +231,59 @@ p1.21 <- read.table("http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/
 
 # Rewrite the column names to be "Y" and "X" to match the textbook:
 colnames(p1.21) <- c("Y","X")
+
+p1.21.lm <- lm(p1.21)
+
+stripchart(p1.21$X, method = 'stack', pch = 16)
+
+plot(p1.21.lm$residuals, type = 'b', pch = 16, cex = 0.8)
+
+stem(p1.21.lm$residuals)
+
+plot(p1.21.lm$residuals ~ p1.21$X)
+
+group1 <- p1.21$X > 1.5
+group2 <- !group1
+
+med1 <- median(p1.21.lm$residuals[group1])
+med2 <- median(p1.21.lm$residuals[group2])
+
+D1 <- abs(p1.21.lm$residuals[group1] - med1)
+D2 <- abs(p1.21.lm$residuals[group2] - med2)
+
+s2bf <- (sum(D1 - mean(D1))^2 + sum(D2 - mean(D2))^2)/length(p1.21$X) - 2
+
+sbf <- sqrt(s2bf)
+
+tbf <- (mean(D1) - mean(D2))/(sbf*sqrt((1/sum(group1)+1/sum(group2))))
+
+qqnorm(p1.21.lm$residuals)
+
+qq.p1.21 <- qqnorm(p1.21.lm$residuals)
+
+names(qq.p1.21)
+
+cor(qq.p1.21$x, qq.p1.21$y)
+
+plot(p1.21.lm$residuals ~ p1.21.lm$fitted.values)
+
+bptest(p1.21.lm)
+
 ```
+
+a. They are asymmetrical. They tend to lean towards 0.
+
+b. There seems to be some sort of pattern 
+
+c. Tthis shows that there's one point that is an outlier. They don't look normally distributed, but we'll check this later.  
+
+d. There doesn't seem to be any major departures. 
+
+e. The correlation coefficient is 0.96097 and the critical value is .879. Therefore, we conclude that the data is normally distributed. 
+
+f. There is an obvious cone-shaped trend. This means that the the errors are not independent. 
+
+g. the BP test statistic is 3.0628 and the p-value is 0.0801. Our level of significance is 0.10. Therefore we reject the null hypothesis that thre is constant variance. 
 
 
 ### 3.6 <span id=points>{5}</span><span id=report>{ / }</span>
@@ -175,9 +327,22 @@ p1.20 <- read.table("http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/
 
 # Rewrite the column names to be "Y" and "X" to match the textbook:
 colnames(p1.20) <- c("Y","X")
+
+p1.20.lm <- lm(p1.20)
+
+yhat.p1.20 <- p1.20.lm$fitted.values
+
+SSPE <- 
+
+
+fstar <- (SSLF/c-2) / (SSPE/n-c)
+
 ```
 
+a. $H_o$: $E{Y} = \beta_0 + \beta_1X$
+  $H_a$: $E{Y} \neq \beta_0 + \beta_1X$ 
 
+b. 
 
 </div>
 
