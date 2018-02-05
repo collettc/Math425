@@ -8,11 +8,12 @@ output:
     code_folding: hide
 ---
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(car)
 library(mosaic)
 library(ggplot2)
 library(lmtest)
+library(alr3)
 ```
 
 ## Instructions
@@ -40,9 +41,9 @@ library(lmtest)
 
 ### Section 3.5 <span id=recpoints>{2}</span><span id=report>{ 2/2 }</span>
 
-### Section 3.6 <span id=recpoints>{6}</span><span id=report>{ 4/6 }</span>
+### Section 3.6 <span id=recpoints>{6}</span><span id=report>{ 5/6 }</span>
 
-### Section 3.7 <span id=recpoints>{7}</span><span id=report>{ 4/7 }</span>
+### Section 3.7 <span id=recpoints>{7}</span><span id=report>{ 7/7 }</span>
 
 ### Section 3.8 <span id=recpoints>{1}</span><span id=report>{ 1/1 }</span>
 
@@ -157,7 +158,7 @@ e. Because the absolute value BF t statistic is less than our critical value, th
 f. It looks like the IQ data should be included in the plot because it has an obvious pattern that would be beneficial to the original plot.
 
 
-### 3.4 <span id=recpoints>{6}</span><span id=report>{ 5/6 }</span>
+### 3.4 <span id=recpoints>{6}</span><span id=report>{ 6/6 }</span>
 
 ```{r p34, message=FALSE, warning=FALSE}
 # Load the Data:
@@ -217,7 +218,7 @@ We conclude that the data is normal.
 
 f. They don't look like they're correlated over time. There is no serious trend of increase or decrease. 
 
-????g. If X2* < X2, then we conclude $H_o$
+g. If X2* < X2, then we conclude $H_o$
 
 because BP = 1.4187 and our p-value is 0.2336, we conclude the null. 
 
@@ -319,7 +320,7 @@ colnames(p1.28) <- c("Y","X")
 ```
 
 
-### 3.13 <span id=recpoints>{3}</span><span id=report>{ / }</span>
+### 3.13 <span id=recpoints>{3}</span><span id=report>{ 3/3 }</span>
 
 ```{r p313}
 # Load the Data:
@@ -332,17 +333,31 @@ p1.20.lm <- lm(p1.20)
 
 yhat.p1.20 <- p1.20.lm$fitted.values
 
-SSPE <- 
+#SSPE <- 
 
 
-fstar <- (SSLF/c-2) / (SSPE/n-c)
+#fstar <- (SSLF/c-2) / (SSPE/n-c)
+
+qf(0.95,8,35)
+
+pureErrorAnova(p1.20.lm)
 
 ```
 
 a. $H_o$: $E{Y} = \beta_0 + \beta_1X$
   $H_a$: $E{Y} \neq \beta_0 + \beta_1X$ 
 
-b. 
+b.
+If F∗ <= F conclude H0. 
+If F* >= F. Conclude Ha.
+
+F = 2.21667
+F* = 0.967
+
+
+Therefore, we conclude that a linear regression is appropriate for this data. 
+
+c. I believe that a lack of fit test cannot determine constant variance or normality because constant variance is determined by any order or patterns in the time sequence plot and the lack of fit test only uses the means within the levels and the variability between the levels. There's no calculation to determine if there is constant variance within the model. The same is with normality.  
 
 </div>
 
@@ -407,7 +422,15 @@ b.
 
 
  
+###Notes
 
+F Test is 
+
+Between Variance/Within Variance
+
+
+
+j
  
 
  

@@ -75,6 +75,10 @@ names(qq.car)
 
 cor(qq.car$x, qq.car$y)
 
+# F test
+library(alr3)
+
+pureErrorAnova(cars.lm)
 
 
 
