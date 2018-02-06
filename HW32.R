@@ -27,15 +27,34 @@ boxCox(cars.lm)
 
 boxCox(cars.lm, lambda = seq(0,4,.1))
 
+#There's an issues with  regression and we see that the variance gets larger
+plot(height ~ age, data = Loblolly)
 lob.lm <- lm(height ~ age, data = Loblolly)
+abline(lob.lm)
 
+#We tranform our Y values by 1.3 found by boxcox
 boxCox(lob.lm, lambda = seq(1,2,.1))
+
+#We plot the regression in our faux universe
 plot(height^1.3 ~ age, data = Loblolly)
 lob.lm.1.3 <- lm(height^1.3 ~ age, data = Loblolly)
 abline(lob.lm.1.3)
+
+#We pull out our values for this regression...
 summary(lob.lm.1.3)
 
+#And plot them into the real world.
 plot(height ~ age, data  = Loblolly)
 b <- coef(lob.lm.1.3)
 b
 curve((b[1] +b[2]*x)^(1/1.3), add = TRUE)
+
+
+
+#Three different tables to know
+
+summary(lob.lm)
+anova(lob.lm)
+pureErrorAnova(lob.lm)
+
+bptest(lob.lm)

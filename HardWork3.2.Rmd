@@ -8,6 +8,15 @@ output:
     code_folding: hide
 ---
 
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+library(car)
+library(alr3)
+library(lmtest)
+library(ggplot2)
+library(dplyr)
+
+```
+
 ## Instructions
 
 1. Study Sections 3.9-3.11 of Chapter 3: "Diagnostics and Remedial Measures."    
@@ -17,11 +26,11 @@ output:
 
 ## Reading Points <span id=headpoints>{18} Possible</span>
 
-### Section 3.9 <span id=recpoints>{7}</span><span id=report>{ / }</span>
+### Section 3.9 <span id=recpoints>{7}</span><span id=report>{ 6/7 }</span>
 
-### Section 3.10 <span id=recpoints>{4}</span><span id=report>{ / }</span>
+### Section 3.10 <span id=recpoints>{4}</span><span id=report>{ 4/4 }</span>
 
-### Section 3.11 <span id=recpoints>{7}</span><span id=report>{ / }</span>
+### Section 3.11 <span id=recpoints>{7}</span><span id=report>{ 5/7 }</span>
 
 
 
@@ -29,7 +38,61 @@ output:
 
 
 
-### Exercise 3.20 <span id=recpoints>{3}</span><span id=report>{ / }</span> 
+### Exercise 3.20 <span id=recpoints>{3}</span><span id=report>{ 2/3 }</span> 
+
+```{r}
+
+Loblolly <- Loblolly %>%
+  mutate(divX = 1/age, divY = 1/height)
+
+Loblolly %>%
+ggplot() +
+  geom_point(aes(x = age, y = height))
+lob.lm <- lm(height ~ age, data = Loblolly)
+plot(lob.lm$residuals, pch = 16, cex = 0.8)
+
+Loblolly %>%
+  ggplot() + 
+  geom_point(aes(x = age, y = divY))
+
+divY.lm <- lm(divY ~ age, data = Loblolly)
+plot(divY.lm$residuals, pch = 16, cex = 0.8)
+
+Loblolly %>%
+ggplot() +
+  geom_point(aes(x = divX, y = height))
+divX.lm <- lm(height ~ divX, data = Loblolly)
+plot(divX.lm$residuals, pch = 16, cex = 0.8)
+
+```
+
+
+```{r eval=FALSE, include=FALSE}
+cars <- cars %>%
+  mutate(divX = 1/speed, divY = 1/dist)
+
+cars %>%
+ggplot() +
+  geom_point(aes(x = speed, y = dist))
+
+cars.lm <- lm(dist ~ speed, data = cars)
+plot(cars.lm$residuals, pch = 16, cex = 0.8)
+
+cars %>%
+  ggplot() + 
+  geom_point(aes(x = speed, y = divY))
+
+divY.lm <- lm(divY ~ dist, data = cars)
+plot(divY.lm$residuals, pch = 16, cex = 0.8)
+
+cars %>%
+ggplot() +
+  geom_point(aes(x = divX, y = dist))
+divX.lm <- lm(dist ~ divX, data = cars)
+plot(divX.lm$residuals, pch = 16, cex = 0.8)
+```
+
+It seems that the error terms for the transformations are independent as well. This could be that because when it comes to time, you measure the residuals and you're not exactly adjusting the actual x or y values. Therfore, making a transformation on these variables that are independent will not effect the dependancy of the transformations. 
  
 ### Exercise 3.22 <span id=points>{4}</span><span id=report>{ / }</span> 
 
@@ -41,7 +104,7 @@ output:
 <a id=datalink style="font-size:.9em;" target="_blank" href=http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/textdatasets/index.html>Data Files</a>
 
 
-### Problem 3.16 <span id=recpoints>{6}</span><span id=report>{ / }</span>
+### Problem 3.16 <span id=recpoints>{6}</span><span id=report>{ 4/6 }</span>
 
 ```{r p316}
 # Load the Data:
@@ -49,8 +112,43 @@ p3.15 <- read.table("http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/
 
 # Rewrite the column names to be "Y" and "X" to match the textbook:
 colnames(p3.15) <- c("Y","X")
+p3.15.lm <- lm(Y ~ X, data = p3.15)
+
+plot(Y~X, data = p3.15)
+abline(p3.15.lm)
+
+boxCox(p3.15.lm, lambda = seq(-0.1,0.1, 0.0001))
+
+#We plot the regression in our faux universe
+plot(log(Y) ~ X, data = p3.15)
+p3.15.lm.log <- lm(log(Y) ~ X, data = p3.15)
+abline(p3.15.lm.log)
+
+#We pull out our values for this regression...
+summary(p3.15.lm.log)
+
+#And plot them into the real world.
+plot(Y ~ X, data  = p3.15)
+b <- coef(p3.15.lm.log)
+b
+curve(b[1] + (b[2]*x^1/2), add = TRUE)
 ```
 
+a. Because this plot slopes down exponentially and the variance continually gets smaller, I would use a Y transformation fo Yprime = 1/y.
+
+b. It looks like 0 is recommended according to our BoxCox test. 
+
+c.
+
+d.
+
+e.
+
+f.
+
+g.
+
+h.
 
 
 ### Problem 3.17 <span id=points>{6}</span><span id=report>{ / }</span>
