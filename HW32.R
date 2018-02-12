@@ -58,3 +58,30 @@ anova(lob.lm)
 pureErrorAnova(lob.lm)
 
 bptest(lob.lm)
+
+plot(height ~ age, data = Loblolly) 
+lob.lm <- lm(height ~ age, data = Loblolly)
+abline(lob.lm)
+plot(lob.lm, which = 1)
+
+lob.sqrt.lm <- lm(sqrt(height) ~ age, data = Loblolly)
+plot(sqrt(height) ~ age, data = Loblolly)
+abline(lob.sqrt.lm)
+#Protect the X variable with "I" 
+plot(sqrt(height) ~ I(sqrt(age)), data = Loblolly)
+
+lob.sqrt.lm.with.x <- lm(sqrt(height) ~ I(log10(age)), data = Loblolly)
+abline(lob.sqrt.lm.with.x)
+
+lob.sqrt.lg.lm <- lm(sqrt(height) ~ I(log10(age)), data = Loblolly)
+plot(sqrt(height) ~ I(log10(age)), data = Loblolly)
+abline(lob.sqrt.lg.lm)
+
+b2 <- coef(lob.sqrt.lg.lm)
+
+curve((b2[1] + b2[2]*log10(x))^2, add = TRUE, col = "skyblue")
+
+
+#Lowess curve
+
+lines(lowess(Loblolly$age, Loblolly$height), col = "red")

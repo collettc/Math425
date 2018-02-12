@@ -7,8 +7,8 @@ output:
 ---
 ```{r, message=FALSE, warning=FALSE}
 library(readr)
-happiness <- read_csv("~/School/Fall 2017/MATH 325/Math 325 Notebook/Math 325 Notebook/Data/happinessindex.csv")
-nochina <- read_csv("~/School/Fall 2017/MATH 325/Math 325 Notebook/Math 325 Notebook/Data/nochina.csv")
+happiness <- read_csv("~/Winter 2018/Math 425/Projects/Project1/happinesstempindex.csv")
+nochina <- read_csv("~/Winter 2018/Math 425/Projects/Project1/nochina.csv")
 library(mosaic)
 library(DT)
 library(car)

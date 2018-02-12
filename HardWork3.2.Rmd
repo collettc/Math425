@@ -30,7 +30,7 @@ library(dplyr)
 
 ### Section 3.10 <span id=recpoints>{4}</span><span id=report>{ 4/4 }</span>
 
-### Section 3.11 <span id=recpoints>{7}</span><span id=report>{ 5/7 }</span>
+### Section 3.11 <span id=recpoints>{7}</span><span id=report>{ 6/7 }</span>
 
 
 
@@ -104,7 +104,7 @@ It seems that the error terms for the transformations are independent as well. T
 <a id=datalink style="font-size:.9em;" target="_blank" href=http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/textdatasets/index.html>Data Files</a>
 
 
-### Problem 3.16 <span id=recpoints>{6}</span><span id=report>{ 4/6 }</span>
+### Problem 3.16 <span id=recpoints>{6}</span><span id=report>{ 6/6 }</span>
 
 ```{r p316}
 # Load the Data:
@@ -117,7 +117,7 @@ p3.15.lm <- lm(Y ~ X, data = p3.15)
 plot(Y~X, data = p3.15)
 abline(p3.15.lm)
 
-boxCox(p3.15.lm, lambda = seq(-0.1,0.1, 0.0001))
+boxCox(p3.15.lm, lambda = seq(-0.1,0.1, 0.01))
 
 #We plot the regression in our faux universe
 plot(log(Y) ~ X, data = p3.15)
@@ -131,27 +131,29 @@ summary(p3.15.lm.log)
 plot(Y ~ X, data  = p3.15)
 b <- coef(p3.15.lm.log)
 b
-curve(b[1] + (b[2]*x^1/2), add = TRUE)
+curve(exp(b[1] + b[2]*x), add = TRUE)
+
+plot(p3.15.lm.log$residuals ~ p3.15.lm.log$fitted.values)
+
+qqPlot(p3.15.lm.log)
 ```
 
 a. Because this plot slopes down exponentially and the variance continually gets smaller, I would use a Y transformation fo Yprime = 1/y.
 
-b. It looks like 0 is recommended according to our BoxCox test. 
+b. It looks like 0 is recommended according to our BoxCox test. Which means that we are going to use log(y). 
 
-c.
+c. log(y) = y` = b0 + b1*x
+   
 
-d.
+d. This line works a lot better. It is a good fit. 
 
-e.
+e. There is constant variance and normality for the transformed data. 
 
-f.
-
-g.
-
-h.
+f.  y = e^(b0+b1*x)
 
 
-### Problem 3.17 <span id=points>{6}</span><span id=report>{ / }</span>
+
+### Problem 3.17 <span id=points>{6}</span><span id=report>{ 6/6 }</span>
 
 ```{r p317}
 # Load the Data:
@@ -159,7 +161,68 @@ p3.17 <- read.table("http://www.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/
 
 # Rewrite the column names to be "Y" and "X" to match the textbook:
 colnames(p3.17) <- c("Y","X")
+
+p3.17.lm <- lm(Y ~ X, data = p3.17)
+
+plot(Y~X, data = p3.17)
+
+abline(p3.17.lm)
+
+plot(p3.17.lm)
+
+qqPlot(p3.17.lm)
+
+boxCox(p3.17.lm, lambda = seq(0.1, 0.75, 0.1))
+
+plot(sqrt(Y) ~ X, data = p3.17)
+
+p3.17.lm.sqrt <- lm(sqrt(Y) ~ X, data = p3.17)
+abline(p3.17.lm.sqrt)
+
+b2 <- coef(p3.17.lm.sqrt)
+b2
+
+plot(Y ~X , data = p3.17)
+
+curve(((b2[1] + b2[2]*x)^2), add = TRUE)
+
+plot(p3.17.lm.sqrt)
+
+p3.17.x.lm <- lm(sqrt(Y) ~ X, data = p3.17)
+
+plot(sqrt(Y) ~ I(X^2)^2, data = p3.17) 
+
+p3.17.x.lm <- lm(sqrt(Y) ~ I(X^2)^2, data = p3.17) 
+abline(p3.17.x.lm)
+
+b3 <- coef(p3.17.x.lm)
+
+b3
+
+plot(Y~X, data = p3.17)
+
+curve((b3[1] + b3[2]*x^2)^2, add = TRUE)
+
+plot(p3.17.x.lm)
+
+plot(p3.17.x.lm$residuals ~ p3.17.x.lm$fitted.values)
+qqPlot(p3.17.x.lm)
 ```
+
+a. It does, but running diagnostics on it proves otherwise. 
+
+b. 0.5 is the suggested. Which is Y` = sqrt(y)
+
+c. sqrt(y) = b0 + b1*X
+
+d. This does seem to be a good fit, but our qq plot shows otherwise. We have fixed our constant variance, but our linearity is still off.  
+
+e. We seem to fix our linearity problem by transforming x by x^2
+
+f. Y =  (b0 + b1*(x)^2)^2
+
+
+
 
 
 ### Problem 3.18 <span id=points>{5}</span><span id=report>{ / }</span>

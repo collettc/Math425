@@ -1,0 +1,150 @@
+---
+title: "Project 1"
+author: "Cameron Collett"
+date: "February 12, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(alr3)
+library(mosaic)
+library(car)
+library(lmtest)
+library(readr)
+library(ggplot2)
+library(tidyverse)
+library(pander)
+```
+
+```{r}
+D <- diamonds %>%
+  filter(cut == "Ideal")
+
+```
+## Our X variable: PRICE
+From the plot below, we can see that the price is skewed to one side for diamonds with ideal cuts. The bulk of our prices lie below \$5000. To make this normal, we will only look for ideal cut diamonds under the price of \$5000.
+
+```{r}
+stripchart(D$price, method = "stack")
+```
+
+```{r}
+hist(D$price)
+```
+
+```{r}
+popdiamond <- D %>%
+  filter(price <= 5000)
+```
+
+Our distribution is a little more normal as we do this, but it is still far from it. 
+
+```{r}
+hist(popdiamond$price)
+```
+
+## Insights for Y variable: CARAT
+
+As we look at our 5 number summary for the carat of the diamonds in our data, we notice that the data is skewed to the right. The mean is greater than the median, meaning that more of the data is found to be greater than the median. 
+```{r}
+pander(favstats(popdiamond$carat))
+
+boxplot(popdiamond$carat, horizontal = TRUE)
+```
+
+## Plotting our Regression model 
+
+When we plot the carat and price of these diamonds, we can see that it is an upward trend. And when we plot a linear regression we see that is assumption is correct. 
+
+Our conclusions and formulat for our regression model are as follows: 
+
+$$
+Y_i = \beta_0 + \beta_1 * X_i + \epsilon_i 
+$$
+
+$$
+where \ \ \epsilon_i ~ N(0,\sigma^2)
+$$
+
+
+$$
+H_o: \beta_1 = 0
+$$
+
+$$
+H_a: \beta_1 \neq 0
+$$
+$$
+\alpha = 0.05
+$$
+
+
+```{r}
+plot(carat ~ price, data = popdiamond, pch = 16, cex = 0.8)
+diamond.lm <- lm(carat ~ price, data = popdiamond)
+abline(diamond.lm, col = "red")
+```
+
+
+```{r}
+pander(anova(diamond.lm))
+pander(summary(diamond.lm)) 
+```
+
+## Assumptions and Departures from the Model
+
+* The regression function is linear
+* The error terms have constant variance 
+* The error terms are independent 
+* The model fits all outlier observations
+* The error terms are normally distributed
+* All important perdictor variables have been included in the model 
+
+### Normality of the residuals
+
+```{r message=FALSE, warning=FALSE}
+hist(diamond.lm$residuals)
+```
+
+### Residual vs. Fitted
+
+```{r message=FALSE, warning=FALSE}
+plot(diamond.lm, where = 1:4)
+```
+
+### Sequence Plot
+
+```{r message=FALSE, warning=FALSE}
+plot(diamond.lm$residuals)
+```
+
+### QQ-plot
+
+```{r message=FALSE, warning=FALSE}
+qqPlot(diamond.lm)
+```
+
+
+## Confidence Interval and Data Prediction
+
+## Transformed Model
+
+```{r}
+boxCox(diamond.lm, seq(0.44, 0.49, 0.01))
+
+plot(sqrt(carat) ~ price, data = popdiamond)
+diamond.2.lm <- lm(sqrt(carat) ~ price, data = popdiamond)
+abline(diamond.2.lm, col = 'red')
+
+b <- coef(diamond.2.lm)
+
+summary(diamond.2.lm)
+
+plot(carat ~ price, data = popdiamond)
+
+curve((b[1] + b[2] *x)^2, add = TRUE, col = "red")
+
+```
+
+$\lambda$ = 0.471
+

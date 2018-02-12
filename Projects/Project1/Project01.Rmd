@@ -1,0 +1,201 @@
+---
+title: "425 Revision - Predicting the Happiness of Countries"
+output: 
+  html_document:
+    theme: readable
+    code_folding: hide
+---
+```{r, message=FALSE, warning=FALSE}
+library(readr)
+library(car)
+library(alr3)
+library(lmtest)
+happiness <- read_csv("~/Winter 2018/Math 425/Projects/Project1/happinesstempindex.csv")
+nochina <- read_csv("~/Winter 2018/Math 425/Projects/Project1/nochina.csv")
+library(mosaic)
+library(DT)
+library(car)
+library(pander)
+```
+
+![](C:\Users\Cameron\Documents\School\Fall 2017\MATH 325\Math 325 Notebook\Math 325 Notebook\Images\Happyworld.jpg)
+\
+\
+
+<!-- Directions
+
+Come up with a simple linear regression of your own creation. 
+
+* Write the Background and clearly state your question. Then collect data and perform the linear regression analysis in order to answer your question. Use the proper order of first, ask the question, then second, figure out the answer.
+
+* You should collect both the quantitative response variable and the quantitative explanatory variable yourself. This can be data you collect from 
+    - the internet (like weather data, Facebook data, or sports data) 
+    - your own experiment 
+    - your own observational study
+* However,     
+    - The data should not be a single pre-existing dataset. It must be something that you piece together yourself.
+
+* You need at least $n=3$ $(X,Y)$ pairs to perform the regression. However, your regression will only be useful if you can get around $n=10$ or more observations.
+
+
+
+-->
+
+
+### Background
+
+With all the different countries in the world, there can be a broad diversity in cultures, foods, religions, politics, and countless other things. There is even a measure of a country's happiness. In the World Database of Happiness, surveys were taken in countries around the world and were asked questions like, "Taking all together, how satisfied or dissatisfied are you with your life-as-a-whole these days?". These answers we taken in numeric form and from these recorded numbers, they were able to calculate a country's "Average Happiness".
+
+There are many different variables to account for happiness. Our question is whether or not population has an effect on the happiness of a country. All data used is for the year 2017. 
+
+### The Data
+
+To set up this test, we needed the happiness indexes and populations of several random countries. From a database of every country in the world, 25 countries were selected by a random number generator in Microsoft Excel. We researched the populations and happiness indexes from our sources cited at the bottom and put them in a table.
+
+```{r}
+plot(Happiness ~ Population, data=happiness, pch=20, xlab="Population", ylab="Happiness Index", main = "Happiness Index by Population")
+```
+
+
+The data is shown below.
+
+```{r}
+library(knitr)
+kable(happiness[,], caption="Countries, Population and Happiness")
+```
+
+### Appropriateness of the above regression
+
+There are 5 assumptions that we need to check before we move on into our test. They are:
+
+1. The regression between Y and X is linear.
+2. The error terms are normally distributed.
+3. The variance of the error terms is constant over all X values.
+4. The X values can be considered fixed and measured without error.
+5. The error terms are independent.
+
+```{r}
+happiness.lm<-lm(Happiness~Population, data = happiness)
+```
+
+```{r}
+par(mfrow=c(1,2))
+plot(happiness.lm, which=1:2)
+par(mfrow=c(1,1))
+
+plot(happiness.lm$residuals, xlab="Order", ylab="Residuals") 
+```
+
+We can conclude from these plots:
+
+1. There are no apparent trends, so our relation is linear.
+2. The data is roughly normal. There are some deviations on the QQ plot, but for the most part looks good.
+3. The vertical spread of the residuals is constant as far as we can see.
+4. We cannot verify how the data had been obtained so we will just assume that they are fixed and were recorded without error.
+5. There is no recognizable pattern in the residuals plot, therefore, the error terms are independent.
+
+From the plotted points, we can't verify that there is a linear relationship from what we have. The normality of the data isn't perfect but looks good enough, and the outlier makes it difficult to gauge the other assumptions, but we will move forward with the analysis anyway.
+
+
+## Analysis
+
+In our question, the slope is the determining factor of whether or not the population determines the happiness of the country. If the slope is zero, there is no meaningful relationship between the happiness and the population.
+
+$$
+H_o: \beta_1 = 0
+$$
+
+$$
+H_a: \beta_1 \neq 0
+$$
+
+$$
+a=0.05
+$$
+Below is a scatterplot that shows the relationship between the population and the happiness of our selected countries with the fitted slope. You will notice the outlier. This is China whose population is nearly 1.5 billion people - nearly 4.5 times larger than the 2nd largest country in our data which is the U.S. just below 350 hundred-thousand people.
+
+```{r}
+plot(Happiness ~ Population, data=happiness, pch=20, xlab="Population", ylab="Happiness Index", main = "Happiness Index by Population")
+abline(happiness.lm)
+```
+
+
+
+
+
+```{r}
+pander(summary(happiness.lm))
+```
+
+We see from our test that the P-value of our slope is greater than 0.05 and so have insufficient evidence to reject the null hypothesis that our slope is not different from zero. 
+
+
+## Interpretation
+
+First, we need to recognize that the slope looks greater than it is because our outlier - China - is nearly 1.2 billion people greater than the 2nd largest in our data. From our linear regression test up above, we see that our estimated slope is very close to zero at 5.46e-10 and there isn't enough evidence to suggest that our slope is anything other than zero. This means that there is not a linear relation between population and happiness of a country.
+
+## Extra - Removing the Outlier
+
+Because China is so incredibly larger than the rest of the countries, the question arises about what would happen if we removed it from the data. Here are the plots and tests if China was excluded from our data.
+
+```{r}
+nochina.lm<-lm(Happiness~Population, data = nochina)
+```
+
+```{r}
+plot(Happiness ~ Population, data=nochina, pch=20, xlab="Population", ylab="Happiness Index", main = "Happiness Index by Population")
+abline(nochina.lm)
+```
+
+
+```{r}
+par(mfrow=c(1,2))
+plot(nochina.lm, which=1:2)
+par(mfrow=c(1,1))
+plot(nochina.lm$residuals, xlab = "Order", ylab = "Residuals")
+```
+
+
+```{r}
+pander(summary(nochina.lm))
+```
+
+There's a couple changes when we do this. Our plotted points look a little cleaner but still don't show a significant linear relationship. We see that our P-value for population gets dramatically better but still doesn't pass our level of significance. Our Residuals vs Fitted plot looks a little better but isn't perfect due to the spike towards the left of the plot. Our data still looks normal as well. 
+
+Even without our outlier China, we still have the same issues with assumptions and our test comes out with the same result - no linear relationship between happiness and population. 
+
+
+Sources:
+
+http://www.worldometers.info/world-population/population-by-country/
+
+http://worlddatabaseofhappiness.eur.nl/hap_nat/nat_fp.php?mode=1
+
+image: https://images-na.ssl-images-amazon.com/images/I/41IVr9dOewL.jpg
+
+
+
+
+### MATH 425 Project Observations
+
+In this simple linear regression analysis, a Happiness Index score is predicted by population. The first issue with this analysis is that the regression model is not stated. It was assumed that the test is linear. We will do an analysis to determine if this regression model is appropriate. Our conclusions and model are as follows. 
+
+$$ 
+Y_i = \beta_0 + \beta_1X_i + E_i\ \ \ \ \ where E_i ~ N(0,\sigma^2)
+
+$$
+We are testing the appropriateness of a simple linear regression. OUr hypotheses are as follows: 
+
+$$
+H_0: \beta_1 = 0
+$$
+$$
+H_a: \beta_1 \neq 0 
+
+$$
+
+$$
+\alpha = 0.05
+$$
+
+
