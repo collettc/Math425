@@ -262,7 +262,7 @@ $H_0: \beta_1 = 0$
 $H_a: \beta_1 \ne 0$
 
 If |t*| <= t(1-$\alpha$/2; n-2), conclude $H_o$
-If |t*| >= t(1-$\alpha$/2; n-2), conclude $H_a$
+If |t*| > t(1-$\alpha$/2; n-2), conclude $H_a$
 
 t* = 31/123
 

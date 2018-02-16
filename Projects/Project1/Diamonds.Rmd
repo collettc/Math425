@@ -1,8 +1,13 @@
 ---
-title: "Project 1"
+title: "Diamonds Project"
 author: "Cameron Collett"
-date: "February 12, 2018"
-output: html_document
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: 
+  html_document:
+    theme: readable
+    toc: true
+    toc_float: true
+    code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
@@ -20,7 +25,7 @@ library(pander)
 
 ## Background
 
-Diamonds are valuable gems that are often used when proposing marriage. Student's at BYU - Idaho are at a time in their lives when they are concidering proposal with a ring. Many have very fixed budgets. We have been provided with a dataset that contains tens of thousands of different diamonds and variables of the diamonds like cut, color, carat, dimensions and costs. Because these students are proposing to the love of their lives, they want the best cut and best colors available so we will only use "D" colored diamonds and "Ideal" cut diamonds. We will base our regression after this subsetted data. Carat is the variable in question. We want a regression of Price and Carat for these particular diamonds. 
+Diamonds are valuable gems that are often used when proposing marriage. Student's at BYU - Idaho are at a time in their lives when they are considering proposal with a ring. Many have very fixed budgets. We have been provided with a data set that contains tens of thousands of different diamonds and variables of the diamonds like cut, color, carat, dimensions and costs. Because these students are proposing to the love of their lives, they want the best cut and best colors available so we will only use "D" colored diamonds and "Ideal" cut diamonds. We will base our regression after this subsetted data. Carat is the variable in question. We want a regression of Price and Carat for these particular diamonds. 
 
 ```{r}
 diamonds1 <- diamonds %>%
@@ -37,6 +42,7 @@ hist(diamonds1$price)
 
 ```{r}
 D <- diamonds1 %>%
+  select(carat, price) %>%
   filter(price <= 5000)
 ```
 
@@ -56,17 +62,19 @@ pander(favstats(D$carat))
 boxplot(D$carat, horizontal = TRUE)
 ```
 
-### The Plot/Lowess Curve
+## The Plot/Lowess Curve
 
 To get a visual idea of the type of regression we are going to look for, we will plot a lowess curve on our plotted data (in red), and our linear regression line (in blue). We can see that they are not similar. We will have to use some transformations to find a better fit regression model. We will make sure that our linear model really isn't as accurate as it seems below. 
 
 ```{r}
 plot(carat ~ price, data = D, pch = 18)
 lines(lowess(D$price, D$carat), col = "red", lwd = 2)
-D.lm <- lm(carat ~ price, data = unclass(D))
+D.lm <- lm(carat ~ price, data =D)
 abline(D.lm, col = "blue", lwd = 2)
 
 ```
+
+## Alternative Conclusions and Decision Rule
 
 
 We will be testing $\beta_1$ because it's our slope that's in question. Our alternative conclusions are as follows: 
@@ -92,17 +100,30 @@ $$
 $$
 
 ```{r}
-summary(D.lm)
+pander(summary(D.lm))
 ```
 
 
-```{r eval=FALSE, include=FALSE}
-pander(anova(diamond.lm))
-pander(summary(diamond.lm)) 
-pander(pureErrorAnova(diamond.lm))
+
+
+
+
+We want to determine if there is a linear relation between the diamond's carat and the price. To do this we will test our decision rule: 
+
+* If |t*| <= t(1-$\alpha$/2; n - 2), conclude $H_0$
+
+* If |t*| > t(1-$\alpha$/2; n - 2), conclude $H_a$
+
+```{r}
+pander(qt(1-0.05/2, length(D$price-2)))
 ```
 
-We see that our Adjusted R-Squared value is 0.8546 which isn't too bad, but there could still be a better fitted model. 
+t* = 120.1
+
+t = 1.961
+
+Therefore, we conclude that $\beta_1 \neq 0$, meaning that there is a linear relationship between price and carat. 
+
 
 ## Assumptions and Departures from the Model
 
@@ -111,11 +132,11 @@ We see that our Adjusted R-Squared value is 0.8546 which isn't too bad, but ther
 * The error terms are independent 
 * The model fits all outlier observations
 * The error terms are normally distributed
-* All important perdictor variables have been included in the model 
+* All important predictor variables have been included in the model 
 
 ### Normality of the Residuals
 
-From this graphic we can see that our residuals are normally distribted and there doesn't seem to be any outlier. Possibly with a residual at -0.4. We will dismiss this for now.
+From this graphic we can see that our residuals are normally distributed and there doesn't seem to be any outliers.
 
 
 ```{r message=FALSE, warning=FALSE}
@@ -129,12 +150,13 @@ We notice that our variance doesn't look constant. As we move down the graph, we
 Is there a pattern here that we aren't taking into account? There are "chunks". 
 
 ```{r message=FALSE, warning=FALSE}
-plot(D.lm, where = 1)
+plot(D.lm$residuals ~ D.lm$fitted.values)
+lines(lowess(D.lm$fitted.values, D.lm$residuals), col = "red")
 ```
 
 ### Sequence Plot
 
-For the most part, there seems to be independent errors terms except for something happening at Index 500. This may have come from the same issue in our Residual vs. Fitted plot. 
+For the most part, there seems to be independent error terms except for something happening at Index 500. This may have come from the same issue in our Residual vs. Fitted plot. 
 
 ```{r message=FALSE, warning=FALSE}
 plot(D.lm$residuals)
@@ -142,23 +164,21 @@ plot(D.lm$residuals)
 
 ### QQ-plot
 
-our distribution of the data seems to be normal for the most part, except for the ends. This, as well, may be due to missing data from our model. 
+Our distribution of the data seems to be normal for the most part, except for the ends. This, as well, may be due to missing data from our model. 
 
 ```{r message=FALSE, warning=FALSE}
 qqPlot(D.lm)
 ```
 
 
-## Confidence Interval and Data Prediction
-
-Our confidence Interval 
 
 ## Transformed Model
 
+In order to perform transformations on these data, we need to perform a Box Cox test to determine lamba and the appropriate transformation. Unfortunately, due to the type of data set that our diamonds data is called to, tibbles cannot be used in a Box Cox test. Due to the our R-squared value being able to explain 85 percent of our data, we will dismiss transformations for our regression.
 
-#BOXCOX isn't working getting Error in terms.formula(formula, data = data) : 'data' argument is of the wrong type
+The code to do a Cox Box test can be found below. 
 
-``{r}
+` ``{r}
 boxCox(D.lm)
 
 plot(sqrt(carat) ~ price, data = D)
@@ -173,7 +193,30 @@ plot(carat ~ price, data = D)
 
 curve((b[1] + b[2] *x)^2, add = TRUE, col = "red", lwd = 2)
 
-``
+` ``
 
-$\lambda$ = 0.471
+## Confidence Interval and Data Prediction
+
+```{r}
+pred <- predict(D.lm, data.frame(price = 1000), interval="prediction")
+conf <- predict(D.lm, data.frame(price = 1000), interval="confidence")
+```
+
+Because most students can't afford thousands of dollars for a ring, we will assume that a student has a budget of \$1000 to purchase a ring. Our prediction interval is found in red and our confidence interval is found in blue. Both are at a 95% confidence. We see that average of every diamond found at \$1000 is between 0.376 and 0.3819 carats. For any particular diamond, it can be found between 0.2523 and 0.5056 carats. 
+
+
+
+```{r}
+pred
+conf
+```
+
+
+```{r}
+plot(carat ~ price, data = D)
+abline(v = 1000)
+abline(h = c(conf[2], conf[3]), col = "blue")
+abline(h = c(pred[2], pred[3]), col = "red")
+```
+
 
