@@ -92,3 +92,37 @@ pureErrorAnova(happinessred.lm)
 Confidence band
 SSR
 SSE78
+
+
+#Utilities
+
+plot(totalbill ~ temp, data = Utilities)
+#Put the Lowess Curve
+lines(lowess(Utilities$temp, Utilities$totalbill))
+lin.lm <- lm(totalbill ~ temp, data = Utilities)
+abline(lin.lm)
+summary(lin.lm)
+
+#Prediction Interval
+
+predict(lin.lm, data.frame(temp = 20), interval = "prediction")
+abline(h =c(157.7899, 316.0275), lty=2)
+
+#boxcox
+
+boxCox(lin.lm)
+plot(sqrt(totalbill) ~ temp, data = Utilities)
+sqrt.lm <- lm(sqrt(totalbill) ~ temp, data = Utilities)
+abline(sqrt.lm)
+predict(sqrt.lm, data.frame(temp=20), interval="prediction")
+abline(h = c(12,23175, 18.34745), lty = 2)
+abline(v=20, lty=2)
+plot(totalbill ~ temp, data = Utilities)
+b <- coef(sqrt.lm)
+curve((b[1] + b[2]*x)^2, add = TRUE)
+abline(lin.lm, col = "red")
+abline(h=c(12.23175^2, 18.34745^2), col = "red")
+plot(totalbill ~ I(exp(-temp)), data = Utilities)
+
+xp <- 1/Utilities$temp
+plot(totalbill ~ I(1/temp), data = Utilities)
